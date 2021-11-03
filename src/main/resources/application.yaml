@@ -1,6 +1,9 @@
 axon:
   axonserver:
-    clientId: flights-cmd
+    clientId: flights-query
+spring:
+  application:
+    name: flights-query
 server:
   port: 8090
 spring:
