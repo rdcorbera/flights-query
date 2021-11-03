@@ -1,12 +1,11 @@
 axon:
   axonserver:
     clientId: flights-query
-spring:
-  application:
-    name: flights-query
 server:
   port: 8090
 spring:
+  application:
+    name: flights-query
   datasource:
     url: jdbc:h2:mem:flightsdb
     driverClassName: org.h2.Driver
