@@ -1,6 +1,6 @@
 package com.skyxairlines.services.flightquery.api.handlers;
 
-import com.skyxairlines.services.flightquery.api.events.FlightCreatedEvent;
+import com.skyxairlines.libs.flightsdomain.events.FlightCreatedEvent;
 import com.skyxairlines.services.flightquery.infrastructure.entities.Flight;
 import com.skyxairlines.services.flightquery.infrastructure.repositories.FlightRepository;
 import org.axonframework.eventhandling.EventHandler;
