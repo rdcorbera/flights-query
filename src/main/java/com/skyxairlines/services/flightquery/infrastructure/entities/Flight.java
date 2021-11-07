@@ -2,9 +2,9 @@ package com.skyxairlines.services.flightquery.infrastructure.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,4 +15,6 @@ public class Flight {
   private int flightNumber;
   private String origin;
   private LocalDate departureDate;
+  @OneToMany(mappedBy = "flight")
+  private List<Leg> legs;
 }

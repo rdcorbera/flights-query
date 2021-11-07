@@ -1,8 +1,11 @@
 package com.skyxairlines.services.flightquery.api.handlers;
 
 import com.skyxairlines.libs.flightsdomain.events.FlightCreatedEvent;
+import com.skyxairlines.libs.flightsdomain.events.LegAddedEvent;
 import com.skyxairlines.services.flightquery.infrastructure.entities.Flight;
+import com.skyxairlines.services.flightquery.infrastructure.entities.Leg;
 import com.skyxairlines.services.flightquery.infrastructure.repositories.FlightRepository;
+import com.skyxairlines.services.flightquery.infrastructure.repositories.LegRepository;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +13,13 @@ import org.springframework.stereotype.Component;
 public class FlightHandler {
 
   private final FlightRepository flightRepository;
+  private final LegRepository legRepository;
 
-  public FlightHandler(FlightRepository flightRepository) {
+  public FlightHandler(
+      FlightRepository flightRepository,
+      LegRepository legRepository) {
     this.flightRepository = flightRepository;
+    this.legRepository = legRepository;
   }
 
   @EventHandler
@@ -35,5 +42,20 @@ public class FlightHandler {
     );
 
     flightRepository.save(flight);
+  }
+
+  @EventHandler
+  public void on(LegAddedEvent event) {
+    System.out.println("LegAddedEvent " + event.getFlightId());
+    Flight flight = flightRepository.getById(event.getFlightId());
+    Leg newLeg = Leg.builder()
+        .origin(event.getOrigin())
+        .destination(event.getDestination())
+        .departureDateTime(event.getDepartureDateTime())
+        .arrivalDateTime(event.getArrivalDateTime())
+        .flight(flight)
+        .build();
+
+    legRepository.save(newLeg);
   }
 }
