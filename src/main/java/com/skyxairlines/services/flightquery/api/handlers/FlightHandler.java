@@ -1,6 +1,7 @@
 package com.skyxairlines.services.flightquery.api.handlers;
 
 import com.skyxairlines.libs.flightsdomain.events.FlightCreatedEvent;
+import com.skyxairlines.libs.flightsdomain.events.GateUpdatedEvent;
 import com.skyxairlines.libs.flightsdomain.events.LegAddedEvent;
 import com.skyxairlines.services.flightquery.infrastructure.entities.Flight;
 import com.skyxairlines.services.flightquery.infrastructure.entities.Leg;
@@ -57,5 +58,21 @@ public class FlightHandler {
         .build();
 
     legRepository.save(newLeg);
+  }
+
+  @EventHandler
+  public void on(GateUpdatedEvent event) {
+    System.out.println("GateUpdatedEvent " + event.getFlightId());
+
+    Flight flight = flightRepository.getById(event.getFlightId());
+    Leg leg = flight.getLegs().stream()
+        .filter(l -> l.getOrigin().equals(event.getOrigin()))
+        .findFirst()
+        .get();
+
+    leg.setGate(event.getGate());
+    leg.setTerminal(event.getTerminal());
+
+    flightRepository.save(flight);
   }
 }

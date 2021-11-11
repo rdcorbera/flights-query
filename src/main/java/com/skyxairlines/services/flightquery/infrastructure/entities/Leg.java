@@ -21,6 +21,8 @@ public class Leg {
   private String destination;
   private LocalDateTime departureDateTime;
   private LocalDateTime arrivalDateTime;
+  private String gate;
+  private int terminal;
   @ManyToOne
   @JoinColumn(name="flight_id", nullable=false)
   private Flight flight;
